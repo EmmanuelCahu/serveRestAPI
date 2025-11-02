@@ -10,17 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Baixar repositório
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Instalar Newman e reporter htmlextra
       - name: Install Newman and reporter
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
-      # 3. Rodar testes e gerar relatório com timestamp
       - name: Run Postman tests and generate report
         run: |
           mkdir -p newman
@@ -33,28 +30,8 @@ jobs:
             --reporter-htmlextra-export "newman/$REPORT_NAME"
           echo $REPORT_NAME > report_name.txt
 
-      # 4. Publicar relatório na branch `reports`
-      - name: Push report to reports branch
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          REPORT_NAME=$(cat report_name.txt)
-          mkdir -p /tmp/reports
-          cp newman/$REPORT_NAME /tmp/reports/
-
-          # Clonar branch reports ou criar nova se não existir
-          git fetch origin
-          if git show-ref --verify --quiet refs/remotes/origin/reports; then
-            git switch reports
-          else
-            git checkout --orphan reports
-            git rm -rf .
-          fi
-
-          cp /tmp/reports/$REPORT_NAME .
-          git add $REPORT_NAME
-          git commit -m "Adiciona relatório Newman ($REPORT_NAME) [skip ci]" || echo "Sem alterações"
-          git push origin HEAD:reports
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: newman/*.html
