@@ -1,14 +1,13 @@
-# Bootcamp 01 Qualiters club
-Teste de API Rest do manual a CI/CD
+# Teste de API Rest do manual a CI/CD
 
 ## O que é 
 Este repositorio foi criado com o intuito de testar API Rest
 
 ## Tecnologias utilizadas
-Postman for Web V11.69.7-251031-0540  Browser & OS Chrome 141, Windows 10
-Newman V6.2.1
-Node V24.10.0
-Newman-reporter-htmlextra V1.23.1
+1. Postman for Web V11.69.7-251031-0540  Browser & OS Chrome 141, Windows 10
+2. Newman V6.2.1
+3. Node V24.10.0
+4. Newman-reporter-htmlextra V1.23.1
 
 ## Documentação
 Doc da API : [Consulte Swagger](https://serverest.dev/)
@@ -23,15 +22,15 @@ npm install -g newman-reporter-htmlextra
 ## Como rodar os testes
 
 ### Pelo Postman web ou desktop
-- Importe a collection e o environment
-- Execute os testes de forma manual ou automatizada
+1. Importe a collection e o environment
+2. Execute os testes de forma manual ou automatizada
 ### Pelo newman
-- Abra o console de preferencia
-- Execute a seguinte linha de comando para rodar os testes
+1. Abra o console de preferencia
+2. Execute a seguinte linha de comando para rodar os testes
 ```
 newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli
 ```
-- Execute os testes com relatório
+3. Execute os testes com relatório
 ```
 newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli,htmlextra
 ```
