@@ -5,9 +5,6 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write  # permite que o workflow altere o repositório
-
 jobs:
   newman:
     runs-on: ubuntu-latest
@@ -15,26 +12,43 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Newman and reporters
+      - name: Install Newman and reporter
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
-      - name: Run Postman tests
+      - name: Run Postman tests and generate timestamped report
         run: |
           mkdir -p newman
+          # Gera timestamp no formato solicitado
+          TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S-%3N-0")
+          REPORT_NAME="newman-run-report-${TIMESTAMP}.html"
+          echo "Gerando relatório: $REPORT_NAME"
+          
+          # Executa o Newman com reporter htmlextra
           newman run ServeRest.postman_collection.json \
             -e serveRest_env.postman_environment.json \
-            -r cli,htmlextra \
-            --reporter-htmlextra-export newman/report.html
+            -r htmlextra \
+            --reporter-htmlextra-export "newman/$REPORT_NAME"
+
+          # Exporta variável para etapa seguinte
+          echo "REPORT_NAME=$REPORT_NAME" >> $GITHUB_ENV
 
       - name: Commit and push report to repository
+        if: success()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add newman/report.html
-          git commit -m "Atualiza relatório Newman [skip ci]" || echo "Sem alterações para commitar"
-          git push origin HEAD:main
+          git add newman/
+          
+          # Verifica se há mudanças antes de commitar
+          if git diff --cached --quiet; then
+            echo "Nenhum novo relatório detectado. Pulando commit."
+          else
+            git commit -m "Adiciona relatório Newman ($REPORT_NAME) [skip ci]" || true
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT_NAME: ${{ env.REPORT_NAME }}
