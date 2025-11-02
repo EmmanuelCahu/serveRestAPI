@@ -19,11 +19,13 @@ Doc da API : [Consulte Swagger](https://serverest.dev/)
 ```
 npm install -g newman-reporter-htmlextra
 ```  
+
 ## Como rodar os testes
 
 ### Pelo Postman web ou desktop
 1. Importe a collection e o environment
 2. Execute os testes de forma manual ou automatizada
+
 ### Pelo newman
 1. Abra o console de preferencia
 2. Execute a seguinte linha de comando para rodar os testes
@@ -34,11 +36,14 @@ newman run ServeRest.postman_collection.json -e serveRest_env.postman_environmen
 ```
 newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli,htmlextra
 ```
+
 ### Report
 Os testes com **htmlextra** geram um arquivo `.html` contendo o resultado completo dos testes.
 
-- **Localização do relatório:** o arquivo é disponibilizado como **artifact** no GitHub Actions.  
-- **Como acessar:**
+Localização do relatório: 
+O arquivo é disponibilizado como **artifact** no GitHub Actions.  
+
+Como acessar:
   1. Acesse o seu repositório no GitHub.  
   2. Vá em **Actions → Newman run → Última execução → Artifacts → newman-report → Download**.  
   3. Descompacte o arquivo `.zip` baixado.  
