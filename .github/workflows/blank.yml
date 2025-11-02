@@ -10,7 +10,7 @@ jobs:
   newman:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
       - name: Create dir for report
         run: |
           mkdir testArtifacts
@@ -23,7 +23,7 @@ jobs:
       - name: run Test
         run: newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli,htmlextra
       - name: Report
-        uses: actions/checkout@v4
+        uses: actions/downlaod-artifact@v4
         with:
           name: Reports
           path: newman
