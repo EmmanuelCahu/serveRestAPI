@@ -23,7 +23,7 @@ jobs:
       - name: run Test
         run: newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli,htmlextra
       - name: Report
-        uses: actions/downlaod-artifact@v4
+        uses: actions/download-artifact@v4
         with:
           name: Reports
           path: newman
