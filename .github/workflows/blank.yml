@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs:
-  tag:
+  newman:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
