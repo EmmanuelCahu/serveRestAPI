@@ -21,34 +21,41 @@ jobs:
       - name: Run Postman tests and generate timestamped report
         run: |
           mkdir -p newman
-          # Gera timestamp no formato solicitado
           TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S-%3N-0")
           REPORT_NAME="newman-run-report-${TIMESTAMP}.html"
           echo "Gerando relatório: $REPORT_NAME"
           
-          # Executa o Newman com reporter htmlextra
           newman run ServeRest.postman_collection.json \
             -e serveRest_env.postman_environment.json \
             -r htmlextra \
             --reporter-htmlextra-export "newman/$REPORT_NAME"
 
-          # Exporta variável para etapa seguinte
           echo "REPORT_NAME=$REPORT_NAME" >> $GITHUB_ENV
 
-      - name: Commit and push report to repository
+      - name: Publicar relatório na branch reports
         if: success()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add newman/
           
-          # Verifica se há mudanças antes de commitar
-          if git diff --cached --quiet; then
-            echo "Nenhum novo relatório detectado. Pulando commit."
+          # Cria pasta temporária
+          mkdir -p /tmp/reports
+          cp newman/$REPORT_NAME /tmp/reports/
+          
+          # Clona a branch reports (ou cria se não existir)
+          git fetch origin
+          if git show-ref --verify --quiet refs/remotes/origin/reports; then
+            git switch reports
           else
-            git commit -m "Adiciona relatório Newman ($REPORT_NAME) [skip ci]" || true
-            git push origin HEAD:${{ github.ref_name }}
+            git checkout --orphan reports
+            rm -rf *
           fi
+          
+          # Copia e adiciona o novo relatório
+          cp /tmp/reports/$REPORT_NAME .
+          git add $REPORT_NAME
+          git commit -m "Adiciona relatório Newman ($REPORT_NAME) [skip ci]" || echo "Sem alterações"
+          git push origin HEAD:reports
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_NAME: ${{ env.REPORT_NAME }}
