@@ -15,7 +15,7 @@ Doc da API : [Consulte Swagger](https://serverest.dev/)
 
 ## Como instalar o ambiente
 - 1º: Instalar o node [Link](https://nodejs.org/en/download)
-- 2º: Realize a instalação do Newman de forma global. [Link da dependencia](https://www.npmjs.com/package/newman) 
+- 2º: Realize a instalação do Newman de forma global. [Link da dependência](https://www.npmjs.com/package/newman) 
 - 3º: Instalar o reporter htmlextra (opcional) accesse o [Link](https://www.npmjs.com/package/newman-reporter-htmlextra)
 ```
 npm install -g newman-reporter-htmlextra
