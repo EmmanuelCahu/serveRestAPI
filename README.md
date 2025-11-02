@@ -14,9 +14,9 @@ Newman-reporter-htmlextra V1.23.1
 Doc da API : [Consulte Swagger](https://serverest.dev/)
 
 ## Como instalar o ambiente
-- 1º: Instalar o node [Link](https://nodejs.org/en/download)
-- 2º: Realize a instalação do Newman de forma global. [Link da dependência](https://www.npmjs.com/package/newman) 
-- 3º: Instalar o reporter htmlextra (opcional) accesse o [Link](https://www.npmjs.com/package/newman-reporter-htmlextra)
+1. Instalar o node [Link](https://nodejs.org/en/download)
+2. Realize a instalação do Newman de forma global. [Link da dependência](https://www.npmjs.com/package/newman) 
+3. Instalar o reporter htmlextra (opcional) accesse o [Link](https://www.npmjs.com/package/newman-reporter-htmlextra)
 ```
 npm install -g newman-reporter-htmlextra
 ```  
@@ -36,8 +36,15 @@ newman run ServeRest.postman_collection.json -e serveRest_env.postman_environmen
 newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli,htmlextra
 ```
 ### Report
-Se você optou por rodar os testes com o report htmlextra, você gerou um arquivo .html com o resutado dos testes e para verificar as validações, voce pode abrir a pasta **newman** que foi criada no local em que os arquivos de collection e environment se encontram.
+Os testes com **htmlextra** geram um arquivo `.html` contendo o resultado completo dos testes.
 
+- **Localização do relatório:** o arquivo é disponibilizado como **artifact** no GitHub Actions.  
+- **Como acessar:**
+  1. Acesse o seu repositório no GitHub.  
+  2. Vá em **Actions → Newman run → Última execução → Artifacts → newman-report → Download**.  
+  3. Descompacte o arquivo `.zip` baixado.  
+  4. Abra o arquivo `.html` em seu navegador para conferir os resultados das validações.
+ 
 ## Entre em contato
 email: emmanuelcahu@hotmail.com
 
