@@ -7,10 +7,10 @@ on:
     branches:
       - main
 jobs:
-  newman:
+  tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create dir for report
         run: |
           mkdir testArtifacts
@@ -23,7 +23,7 @@ jobs:
       - name: run Test
         run: newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli,htmlextra
       - name: Report
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/checkout@v4
         with:
           name: Reports
           path: newman
